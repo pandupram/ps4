@@ -1,4 +1,4 @@
-﻿CACHE MANIFEST
+CACHE MANIFEST
 # v2.5.0-playshe-complete-offline
 
 CACHE:
@@ -76,6 +76,7 @@ css/ps4/patches/1102.bin
 slopkit/chain_lapse.js
 slopkit/chain_poops.js
 slopkit/core.js
+slopkit/core.js?v=10
 slopkit/int64.js
 slopkit/jb.js
 slopkit/mem.js
