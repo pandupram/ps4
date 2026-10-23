@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="id" manifest="cache.manifest">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLAYSHE — PlayStation Rental All-in-One Station</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  :root {
+    --ps-cyan: #00f0ff;
+    --ps-magenta: #ff007f;
+    --ps-blue: #0066ff;
+    --ps-yellow: #ffe600;
+    --ps-green: #00ff88;
+    --bg-dark: #12141a;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Background Website Serasi & Menyatu Total */
+  html, body {
+    background-color: var(--bg-dark) !important;
+    background-image: radial-gradient(circle at 50% 12%, rgba(0, 102, 255, 0.18) 0%, transparent 60%) !important;
+    background-attachment: fixed;
+    color: #edf2f7;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 12px 28px;
+    overflow-x: hidden;
+  }
+
+  /* ===================================================
+     CONTAINER UTAMA (LEBAR & SEAMLESS)
+     =================================================== */
+  .container {
+    width: 100%;
+    max-width: 1080px;
+    background: transparent !important;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+
+  /* ===================================================
+     HEADER & LOGO BESAR (JARAK RAPAT)
+     =================================================== */
+  .header-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+
+  .logo-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0 0 -4px;
+  }
+
+  .logo-img {
+    display: block;
+    width: 98%;
+    max-width: 1020px;
+    height: auto;
+    max-height: 520px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.4)) drop-shadow(0 0 60px rgba(255, 0, 127, 0.25));
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .logo-img:hover {
+    transform: scale(1.015);
+    filter: drop-shadow(0 0 40px rgba(0, 240, 255, 0.65)) drop-shadow(0 0 75px rgba(255, 0, 127, 0.45));
+  }
+
+  /* PlayStation Shapes (Jarak Minimalis) */
+  .ps-shapes {
+    font-size: 16px;
+    letter-spacing: 16px;
+    margin: 4px 0 10px;
+    user-select: none;
+  }
+  .ps-triangle { color: var(--ps-green); text-shadow: 0 0 10px var(--ps-green); }
+  .ps-circle   { color: var(--ps-magenta); text-shadow: 0 0 10px var(--ps-magenta); }
+  .ps-cross    { color: var(--ps-cyan); text-shadow: 0 0 10px var(--ps-cyan); }
+  .ps-square   { color: var(--ps-yellow); text-shadow: 0 0 10px var(--ps-yellow); }
+
+  /* ===================================================
+     FIRMWARE AUTO DETECTOR PANEL
+     =================================================== */
+  .detector-panel {
+    background: rgba(22, 26, 36, 0.9);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.05);
+  }
+
+  .detector-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .detector-icon {
+    font-size: 26px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(0, 240, 255, 0.15);
+    border: 1px solid rgba(0, 240, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ps-cyan);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  }
+
+  .detector-text h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .detector-text p {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-top: 2px;
+  }
+
+  .fw-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 13px;
+    background: linear-gradient(90deg, #00f0ff, #0099ff);
+    color: #030814;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  }
+
+  .fw-tag.unknown {
+    background: #475569;
+    color: #ffffff;
+    box-shadow: none;
+  }
+
+  .auto-action-btn {
+    appearance: none;
+    background: linear-gradient(135deg, #00f0ff, #ff007f);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .auto-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(255, 0, 127, 0.7);
+    filter: brightness(1.15);
+  }
+
+  /* ===================================================
+     STATUS BAR HUD
+     =================================================== */
+  #status-bar {
+    background: rgba(18, 22, 32, 0.9);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin-bottom: 14px;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  #msgs {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e2e8f0;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+  }
+
+  .section-tag {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin: 8px 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .section-tag::before, .section-tag::after {
+    content: "";
+    height: 1px;
+    width: 60px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.4), transparent);
+  }
+
+  /* ===================================================
+     MENU BUTTONS & SPA PANELS
+     =================================================== */
+  .view-panel {
+    display: none;
+    width: 100%;
+    animation: fadeIn 0.25s ease forwards;
+  }
+
+  .view-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .menu-btn {
+    appearance: none;
+    background: linear-gradient(145deg, rgba(22, 28, 44, 0.95), rgba(14, 18, 30, 0.98));
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    color: #ffffff;
+    padding: 14px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 240, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 66px;
+    width: 100%;
+  }
+
+  .menu-btn small {
+    font-size: 11px;
+    font-weight: 500;
+    color: #67e8f9;
+  }
+
+  .menu-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+    transform: skewX(-20deg);
+    transition: 0.5s;
+  }
+
+  .menu-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: var(--ps-cyan);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.2);
+    background: linear-gradient(145deg, #0050b4, #002d6e);
+  }
+
+  .menu-btn:hover::before {
+    left: 140%;
+  }
+
+  /* Highlight for Auto-Detected Firmware */
+  .menu-btn.detected-match {
+    border-color: var(--ps-green) !important;
+    background: linear-gradient(145deg, #093826, #052217) !important;
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.55), inset 0 0 15px rgba(0, 255, 136, 0.2) !important;
+    animation: pulseGlow 2s infinite;
+  }
+
+  .menu-btn.detected-match small {
+    color: #86efac !important;
+    font-weight: 700;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+    50% { box-shadow: 0 0 35px rgba(0, 255, 136, 0.75); }
+  }
+
+  /* Multi FW Featured Button */
+  .menu-btn-featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(255, 230, 0, 0.18), #241e0d);
+    border: 1px solid var(--ps-yellow);
+    box-shadow: 0 0 22px rgba(255, 230, 0, 0.25);
+    min-height: 70px;
+  }
+  .menu-btn-featured span { font-size: 17px; color: #fef08a; text-shadow: 0 0 10px rgba(255, 230, 0, 0.5); }
+  .menu-btn-featured small { color: #fde047; }
+  .menu-btn-featured:hover {
+    border-color: #ffffff;
+    box-shadow: 0 0 35px rgba(255, 230, 0, 0.6);
+    background: linear-gradient(135deg, #eab308, #a16207);
+  }
+
+  /* Return / Navigation Button */
+  .menu-btn-back {
+    grid-column: 1 / -1;
+    background: linear-gradient(145deg, #332025, #1f1418);
+    border-color: rgba(255, 99, 132, 0.4);
+    color: #ffd6df;
+  }
+  .menu-btn-back:hover {
+    background: linear-gradient(145deg, #c53030, #742a2a);
+    border-color: #ff6b81;
+    box-shadow: 0 0 25px rgba(255, 99, 132, 0.5);
+    color: #ffffff;
+  }
+
+  .menu-btn-sub {
+    background: rgba(28, 32, 44, 0.85);
+    border-color: rgba(148, 163, 184, 0.3);
+  }
+  .menu-btn-sub small { color: #94a3b8; }
+  .menu-btn-sub:hover {
+    border-color: #cbd5e1;
+    background: rgba(45, 52, 72, 0.95);
+  }
+
+  @media (max-width: 600px) {
+    .logo-img { max-width: 100%; }
+    .detector-panel { flex-direction: column; text-align: center; }
+    .detector-info { flex-direction: column; }
+    .menu-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header with Large PLAYSHE Logo -->
+  <div class="header-brand">
+    <div class="logo-box">
+      <img src="PROPIL.png" alt="PLAYSHE" class="logo-img" onerror="this.onerror=null; this.src='PROPIL.jpg';">
+    </div>
+
+    <!-- PlayStation Shapes -->
+    <div class="ps-shapes">
+      <span class="ps-triangle">▲</span>
+      <span class="ps-circle">●</span>
+      <span class="ps-cross">✖</span>
+      <span class="ps-square">■</span>
+    </div>
+  </div>
+
+  <!-- Firmware Auto Detection Panel -->
+  <div class="detector-panel" id="detector-panel">
+    <div class="detector-info">
+      <div class="detector-icon">🎮</div>
+      <div class="detector-text">
+        <h3 id="detector-title">Mendeteksi Sistem Konsol...</h3>
+        <p id="detector-desc">Membaca User-Agent browser PlayStation 4</p>
+      </div>
+    </div>
+    <div id="detector-action">
+      <button class="auto-action-btn" id="auto-btn" onclick="executeAutoLaunch()">
+        <span>🚀 Jalankan Exploit Langsung</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dynamic Status Bar -->
+  <div id="status-bar">
+    <div id="msgs">Selamat Datang di PlayShe — Sistem rental PS siap digunakan</div>
+  </div>
+
+  <!-- ========================================================
+       PANEL 1: MENU UTAMA (DASHBOARD)
+       ======================================================== -->
+  <div id="view-main" class="view-panel active">
+    <div class="section-tag">Pilihan Menu Firmware</div>
+
+    <div class="menu-grid">
+      <!-- Multi FW Button -->
+      <button class="menu-btn menu-btn-featured" id="btn-multi"
+              onmouseover="setStatus('GoldHEN Multi FW: Auto-Detection untuk FW 5.05 & 7.00 s/d 13.52')"
+              onmouseout="resetStatus()"
+              onclick="launchMultiFW()">
+        <span>★ GoldHEN Multi FW</span>
+        <small>5.05 &amp; 7.00 - 13.52 (Auto Exploit Selection)</small>
+      </button>
+
+      <!-- 5.05 FW Menu -->
+      <button class="menu-btn" id="btn-505"
+              onmouseover="setStatus('Buka Suite Payload FW 5.05 v2.5')"
+              onmouseout="resetStatus()"
+              onclick="switchView('view-505')">
+        <span>Firmware 5.05</span>
+        <small>GoldHEN &amp; Payload Suite</small>
+      </button>
+
+      <!-- 6.72 GoldHEN Direct -->
+      <button class="menu-btn" id="btn-672gh"
+              onmouseover="setStatus('Jalankan PS4 FW 6.72 GoldHEN langsung di halaman ini')"
+              onmouseout="resetStatus()"
+              onclick="launch672GoldHEN()">
+        <span>Firmware 6.72</span>
+        <small>Muat GoldHEN v2.4b18.12</small>
+      </button>
+
+      <!-- 6.72 Payload Menu -->
+      <button class="menu-btn" id="btn-672full"
+              onmouseover="setStatus('Buka Suite Payload FW 6.72')"
+              onmouseout="resetStatus()"
+              onclick="switchView('view-672')">
+        <span>Firmware 6.72 v3.0</span>
+        <small>Tools &amp; Payloads Lengkap</small>
+      </button>
+
+      <!-- 9.00 GoldHEN Direct -->
+      <button class="menu-btn" id="btn-900gh"
+              onmouseover="setStatus('Jalankan PS4 FW 9.00 GoldHEN langsung di halaman ini')"
+              onmouseout="resetStatus()"
+              onclick="launch900GoldHEN()">
+        <span>Firmware 9.00</span>
+        <small>GoldHEN (FontFaceSet Webkit)</small>
+      </button>
+
+      <!-- 9.00 Payload Menu -->
+      <button class="menu-btn" id="btn-900full"
+              onmouseover="setStatus('Buka Suite Payload FW 9.00')"
+              onmouseout="resetStatus()"
+              onclick="switchView('view-900')">
+        <span>Firmware 9.00 v3.0</span>
+        <small>Tools &amp; Payloads Lengkap</small>
+      </button>
+
+      <!-- Restore Host Tab -->
+      <button class="menu-btn menu-btn-sub" style="grid-column: 1 / -1;"
+              onmouseover="setStatus('Restore Host ke Panduan Pengguna (User Guide) tanpa DNS')"
+              onmouseout="resetStatus()"
+              onclick="switchView('view-restore')">
+        <span>↺ Restore Host User's Guide</span>
+        <small>Recovery &amp; Offline Cache Utility</small>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PANEL 2: PAYLOADS 5.05
+       ======================================================== -->
+  <div id="view-505" class="view-panel">
+    <div class="section-tag">Payloads Suite — Firmware 5.05</div>
+    <div class="menu-grid">
+      <button class="menu-btn" onclick="executePayload505('505/goldhen_2.4b18.12.bin', 'GoldHEN v2.4b18.12')">
+        <span>GoldHEN v2.4b18.12</span><small>5.05 Versi Terbaru</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/goldhen_2.3_505.bin', 'GoldHEN v2.3')">
+        <span>GoldHEN v2.3</span><small>5.05 Stabil</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/todex.bin', 'ToDex')">
+        <span>ToDex</span><small>Aktifkan Debug TestKit</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/dumper.bin', 'Game Dumper')">
+        <span>Game-Dumper</span><small>Dump Game ke USB</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/ftp.bin', 'FTP Server')">
+        <span>FTP Server</span><small>Akses File Port 1337</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/app2usb.bin', 'App2USB')">
+        <span>App2USB</span><small>Pindah Game ke USB exFAT</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/backup.bin', 'DB Backup')">
+        <span>DB Backup</span><small>Backup Database Konsol</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/restore.bin', 'DB Restore')">
+        <span>DB Restore</span><small>Restore Database Konsol</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/disable-updates.bin', 'Disable Updates')">
+        <span>Disable Updates</span><small>Blokir Pembaruan Sistem</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/webrte.bin', 'WebRTE')">
+        <span>WebRTE</span><small>Trainer &amp; Cheat Engine</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/Orbis-Toolbox-505.bin', 'Orbis Toolbox')">
+        <span>Orbis Toolbox</span><small>UI Modifikasi Dashboard</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload505('505/ps4debug100.bin', 'PS4 Debug')">
+        <span>PS4 Debug</span><small>Debugger 5.05</small>
+      </button>
+      <button class="menu-btn menu-btn-back" onclick="switchView('view-main')">
+        <span>❮ Kembali ke Menu Utama</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PANEL 3: PAYLOADS 6.72
+       ======================================================== -->
+  <div id="view-672" class="view-panel">
+    <div class="section-tag">Payloads Suite — Firmware 6.72</div>
+    <div class="menu-grid">
+      <button class="menu-btn" onclick="launch672GoldHEN()">
+        <span>GoldHEN v2.4b18.12</span><small>Muat Langsung 6.72</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload672('672/pl_App2usb.bin', 'App2USB')">
+        <span>App2USB</span><small>Pindah Game ke USB</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload672('672/pl_FTP.bin', 'FTP Server')">
+        <span>FTP Server</span><small>Port 1337</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload672('672/pl_UpdatesDisable.bin', 'Disable Updates')">
+        <span>Disable Updates</span><small>Blokir Update</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload672('672/pl_ToDEX.bin', 'ToDex')">
+        <span>ToDex</span><small>TestKit Features</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload672('672/pl_WebRTE.bin', 'WebRTE')">
+        <span>WebRTE Cheat</span><small>Cheats &amp; Trainer</small>
+      </button>
+      <button class="menu-btn menu-btn-back" onclick="switchView('view-main')">
+        <span>❮ Kembali ke Menu Utama</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PANEL 4: PAYLOADS 9.00
+       ======================================================== -->
+  <div id="view-900" class="view-panel">
+    <div class="section-tag">Payloads Suite — Firmware 9.00</div>
+    <div class="menu-grid">
+      <button class="menu-btn" onclick="launch900GoldHEN()">
+        <span>GoldHEN v2.4b18.12</span><small>Exfathax Webkit</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload900('900v3/app2usb.bin', 'App2USB')">
+        <span>App2USB</span><small>Pindah Game ke USB</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload900('900v3/ftp.bin', 'FTP Server')">
+        <span>FTP Server</span><small>Port 1337</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload900('900v3/disable-updates.bin', 'Disable Updates')">
+        <span>Disable Updates</span><small>Blokir Update</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload900('900v3/todex.bin', 'ToDex')">
+        <span>ToDex</span><small>TestKit Features</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload900('900v3/webrte.bin', 'WebRTE')">
+        <span>WebRTE</span><small>Cheats &amp; Trainer</small>
+      </button>
+      <button class="menu-btn" onclick="executePayload900('900v3/Orbis-Toolbox-900.bin', 'Orbis Toolbox')">
+        <span>Orbis Toolbox</span><small>Custom Dashboard</small>
+      </button>
+      <button class="menu-btn menu-btn-back" onclick="switchView('view-main')">
+        <span>❮ Kembali ke Menu Utama</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PANEL 5: RESTORE HOST
+       ======================================================== -->
+  <div id="view-restore" class="view-panel">
+    <div class="section-tag">Restore Host ke User's Guide</div>
+    <div class="menu-grid">
+      <button class="menu-btn" onclick="restoreHost('505')">
+        <span>Restore 5.05</span><small>Host User's Guide</small>
+      </button>
+      <button class="menu-btn" onclick="restoreHost('672')">
+        <span>Restore 6.72</span><small>Host User's Guide</small>
+      </button>
+      <button class="menu-btn" onclick="restoreHost('900')">
+        <span>Restore 9.00</span><small>Host User's Guide</small>
+      </button>
+      <button class="menu-btn menu-btn-back" onclick="switchView('view-main')">
+        <span>❮ Kembali ke Menu Utama</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer Info -->
+  <h1 style="margin-top: 36px; font-size: 20px; color: #a0aec0; letter-spacing: 2px;">Matur Suwun</h1>
+</div>
+
+<!-- ========================================================
+     ALL-IN-ONE SINGLE PAGE LOGIC (NO REDIRECTS)
+     ======================================================== -->
+<script>
+  // UI View Switching
+  function switchView(viewId) {
+    var panels = document.querySelectorAll('.view-panel');
+    panels.forEach(function(p) { p.classList.remove('active'); });
+    var target = document.getElementById(viewId);
+    if (target) {
+      target.classList.add('active');
+    }
+  }
+
+  // Status message helper
+  var defaultMessage = "Selamat Datang di PlayShe — Sistem rental PS siap digunakan";
+  var msgElement = document.getElementById("msgs");
+  window.msgs = msgElement;
+
+  function setStatus(text) {
+    if (msgElement) { msgElement.innerHTML = text; }
+  }
+
+  function resetStatus() {
+    if (msgElement) { msgElement.innerHTML = defaultMessage; }
+  }
+
+  // Global Exploit Completion Callbacks (Required by 9.00 & 6.72 engines)
+  function allset() {
+    setStatus(window.LoadedMSG || "GoldHEN v2.4b18.12 Berhasil Dimuat ✔");
+  }
+
+  function load_poc() {
+    var req = new XMLHttpRequest();
+    req.responseType = "arraybuffer";
+    var payloadPath = window.PLfile || "goldhen_2.4b18.12.bin";
+    req.open('GET', payloadPath);
+    req.send();
+    req.onreadystatechange = function () {
+      if (req.readyState == 4) {
+        if (req.status == 200 || req.status == 0) {
+          try {
+            var PLD = req.response;
+            var payload_buffer = chain.syscall(477, 0, PLD.byteLength * 4, 7, 0x1002, -1, 0);
+            var pl = p.array_from_address(payload_buffer, PLD.byteLength * 4);
+            var padding = new Uint8Array(4 - (req.response.byteLength % 4) % 4);
+            var tmp = new Uint8Array(req.response.byteLength + padding.byteLength);
+            tmp.set(new Uint8Array(req.response), 0);
+            tmp.set(padding, req.response.byteLength);
+            var shellcode = new Uint32Array(tmp.buffer);
+            pl.set(shellcode, 0);
+            var pthread = p.malloc(0x10);
+            chain.call(libKernelBase.add32(OFFSET_lk_pthread_create), pthread, 0x0, payload_buffer, 0);
+            allset();
+          } catch(e) {
+            setStatus("Gagal memuat buffer payload: " + e);
+          }
+        } else {
+          setStatus("Gagal mengunduh payload: " + payloadPath + " (HTTP " + req.status + ")");
+        }
+      }
+    };
+  }
+
+  function jbdone() {
+    window.LoadedMSG = "GoldHEN v2.4b18.12 Berhasil Dimuat ✔";
+    window.PLfile = "goldhen_2.4b18.12.bin";
+    setTimeout(load_poc, 500);
+  }
+
+  // Dynamic Script Loader (In-Page Injection)
+  function injectScript(src, isModule, onLoadCallback) {
+    var s = document.createElement('script');
+    if (isModule) s.type = 'module';
+    s.src = src;
+    s.onerror = function() {
+      setStatus("Gagal memuat modul: " + src + " - Periksa koneksi/cache!");
+    };
+    if (onLoadCallback) {
+      s.onload = onLoadCallback;
+    }
+    document.head.appendChild(s);
+  }
+
+  // --- Firmware Auto Detection ---
+  var detectedFW = null;
+  var detectedAction = null;
+  var autoTriggered = false;
+
+  function triggerAutoRun() {
+    if (autoTriggered) return;
+    autoTriggered = true;
+    setStatus("Cache Siap ✔ — Memuat GoldHEN Otomatis...");
+    setTimeout(function() {
+      executeAutoLaunch();
+    }, 1200);
+  }
+
+  function initDetector() {
+    var ua = navigator.userAgent;
+    var match = ua.match(/PlayStation 4[ /]([\d.]+)/i);
+    var titleEl = document.getElementById("detector-title");
+    var descEl = document.getElementById("detector-desc");
+    var autoBtn = document.getElementById("auto-btn");
+
+    if (match && match[1]) {
+      detectedFW = match[1];
+      var fwNum = parseFloat(detectedFW);
+      titleEl.innerHTML = 'PS4 Terdeteksi: <span class="fw-tag">FW ' + detectedFW + '</span>';
+
+      if (fwNum === 5.05 || fwNum === 5.07) {
+        detectedAction = function() { executePayload505('505/goldhen_2.4b18.12.bin', 'GoldHEN v2.4b18.12'); };
+        descEl.innerHTML = "Firmware 5.05 siap. Sistem otomatis memuat GoldHEN.";
+        highlightBtn("btn-505");
+      } else if (fwNum === 6.72) {
+        detectedAction = function() { launch672GoldHEN(); };
+        descEl.innerHTML = "Firmware 6.72 siap. Sistem otomatis memuat GoldHEN.";
+        highlightBtn("btn-672gh");
+      } else {
+        detectedAction = function() { launchMultiFW(); };
+        descEl.innerHTML = "Firmware " + detectedFW + " siap. Sistem otomatis memuat GoldHEN.";
+        highlightBtn("btn-multi");
+      }
+      autoBtn.innerHTML = '<span>⚡ Muat GoldHEN FW ' + detectedFW + '</span>';
+      defaultMessage = "Konsol PS4 FW " + detectedFW + " terhubung. Sistem siap memuat exploit.";
+      resetStatus();
+    } else {
+      titleEl.innerHTML = 'Device Browser: <span class="fw-tag unknown">Non-PS4</span>';
+      descEl.innerHTML = 'Buka langsung dari browser konsol PS4 untuk jailbreak otomatis.';
+      detectedAction = function() { launchMultiFW(); };
+    }
+
+    // Auto-trigger jika cache sudah pernah terpasang
+    if (window.applicationCache && (window.applicationCache.status === window.applicationCache.IDLE || localStorage.playshe_cached === "yes")) {
+      setTimeout(triggerAutoRun, 1000);
+    }
+  }
+
+  function highlightBtn(btnId) {
+    var b = document.getElementById(btnId);
+    if (b) {
+      b.classList.add("detected-match");
+      var smallTag = b.querySelector("small");
+      if (smallTag) { smallTag.innerHTML = "✔ Rekomendasi Sistem"; }
+    }
+  }
+
+  function executeAutoLaunch() {
+    if (detectedAction) {
+      detectedAction();
+    } else {
+      launchMultiFW();
+    }
+  }
+
+  // --- IN-PAGE EXPLOIT EXECUTORS (ALL-IN-ONE) ---
+
+  // 1. Multi FW Launch (No page reload)
+  function launchMultiFW() {
+    setStatus("Memulai Multi FW Engine... Harap Tunggu");
+    var ua = navigator.userAgent;
+    var match = ua.match(/PlayStation 4[ /]([\d.]+)/i);
+    var fwNum = match ? parseFloat(match[1]) : 9.00;
+
+    if (fwNum == 5.05 || fwNum == 5.07) {
+      executePayload505("505/goldhen_2.4b18.12.bin", "GoldHEN v2.4b18.12");
+    } else if (fwNum == 6.72) {
+      launch672GoldHEN();
+    } else if (fwNum >= 7.00 && fwNum <= 8.52) {
+      injectScript("700/alert.js", true);
+    } else if (fwNum >= 9.00 && fwNum <= 9.60) {
+      injectScript("900/alert.js", true);
+    } else if (fwNum >= 10.00 && fwNum <= 11.02) {
+      injectScript("css/main.js", false, function() {
+        if (typeof doJb === 'function') doJb();
+      });
+    } else if (fwNum >= 11.50 && fwNum <= 12.02) {
+      injectScript("slopkit/chain_lapse.js", true);
+    } else if (fwNum >= 12.50 && fwNum <= 13.00) {
+      injectScript("slopkit/chain_poops.js", true);
+    } else if (fwNum >= 13.02 && fwNum <= 13.52) {
+      injectScript("slopkit/jb.js", true);
+    } else {
+      injectScript("900/alert.js", true);
+    }
+  }
+
+  // 2. 6.72 GoldHEN Launch (In-Page)
+  function launch672GoldHEN() {
+    setStatus("Memuat WebKit Exploit & GoldHEN FW 6.72... Harap Tunggu");
+    window.LoadedMSG = "GoldHEN v2.4b18.12 Berhasil Dimuat ✔";
+    window.PLfile = "goldhen_2.4b18.12.bin";
+    injectScript("672goldhen/webkit.js", false, function() {
+      injectScript("672goldhen/jb.js", false, function() {
+        if (typeof jailbreak === 'function') {
+          setTimeout(jailbreak, 500);
+        }
+      });
+    });
+  }
+
+  // 3. 9.00 GoldHEN Launch (In-Page)
+  function launch900GoldHEN() {
+    setStatus("Memuat WebKit Exploit 9.00... Pasang USB Exfathax saat diminta!");
+    window.LoadedMSG = "GoldHEN v2.4b18.12 Berhasil Dimuat ✔";
+    window.PLfile = "goldhen_2.4b18.12.bin";
+    injectScript("900goldhen/int64.js", false, function() {
+      injectScript("900goldhen/rop.js", false, function() {
+        injectScript("900goldhen/kexploit.js", false, function() {
+          injectScript("900goldhen/webkit.js", false, function() {
+            if (typeof poc === 'function') {
+              setTimeout(poc, 200);
+            }
+          });
+        });
+      });
+    });
+  }
+
+  // 4. Payload Executor Helper (FW 5.05)
+  function executePayload505(payloadFile, name) {
+    setStatus("Mengirim Payload " + name + "... Harap Tunggu");
+    window.PLfile = payloadFile;
+    if (typeof load_payload === 'function') {
+      load_payload();
+    } else {
+      injectScript("505/exploit.js", false, function() {
+        if (typeof load_payload === 'function') load_payload();
+      });
+    }
+  }
+
+  // 5. Payload Executor Helper (FW 6.72)
+  function executePayload672(payloadFile, name) {
+    setStatus("Mengirim Payload " + name + " (6.72)... Harap Tunggu");
+    window.PLfile = payloadFile;
+    if (typeof load_payload === 'function') {
+      load_payload();
+    } else {
+      injectScript("672goldhen/webkit.js", false, function() {
+        injectScript("672goldhen/jb.js", false, function() {
+          if (typeof load_payload === 'function') {
+            load_payload();
+          } else if (typeof jailbreak === 'function') {
+            setTimeout(jailbreak, 500);
+          }
+        });
+      });
+    }
+  }
+
+  // 6. Payload Executor Helper (FW 9.00)
+  function executePayload900(payloadFile, name) {
+    setStatus("Mengirim Payload " + name + " (9.00)... Harap Tunggu");
+    window.PLfile = payloadFile;
+    if (typeof load_poc === 'function') {
+      load_poc();
+    } else {
+      launch900GoldHEN();
+    }
+  }
+
+  // 7. Restore Helper
+  function restoreHost(fw) {
+    setStatus("Mengembalikan Cache Host FW " + fw + " ke User's Guide...");
+    setTimeout(function() {
+      setStatus("Host FW " + fw + " Berhasil Direstore ke Panduan Pengguna ✔");
+    }, 1200);
+  }
+
+  // ========================================================
+  // OFFLINE CACHE PROGRESS & AUTO-LOAD GOLDHEN
+  // ========================================================
+  if (window.applicationCache) {
+    window.applicationCache.addEventListener("progress", function(e) {
+      if (e.lengthComputable && e.total > 0) {
+        var percent = Math.round(e.loaded / e.total * 100);
+        setStatus("Menginstall Cache Offline: " + percent + "%");
+      } else {
+        setStatus("Menginstall Cache Offline... Harap Tunggu");
+      }
+    }, false);
+
+    window.applicationCache.addEventListener("cached", function() {
+      setStatus("Cache Berhasil Terpasang ✔ — Memuat GoldHEN Otomatis...");
+      localStorage.playshe_cached = "yes";
+      setTimeout(triggerAutoRun, 1500);
+    }, false);
+
+    window.applicationCache.addEventListener("updateready", function() {
+      setStatus("Pembaruan Cache Selesai ✔ — Memuat GoldHEN Otomatis...");
+      localStorage.playshe_cached = "yes";
+      try { window.applicationCache.swapCache(); } catch(e){}
+      setTimeout(triggerAutoRun, 1500);
+    }, false);
+
+    window.applicationCache.addEventListener("noupdate", function() {
+      // Offline / Cache already ready
+      localStorage.playshe_cached = "yes";
+      setTimeout(triggerAutoRun, 800);
+    }, false);
+
+    window.applicationCache.addEventListener("error", function() {
+      // Offline mode triggers error event when checking remote manifest
+      if (localStorage.playshe_cached === "yes" || window.applicationCache.status === window.applicationCache.IDLE) {
+        setTimeout(triggerAutoRun, 800);
+      }
+    }, false);
+  }
+
+  window.addEventListener("DOMContentLoaded", initDetector);
+</script>
+
+</body>
+</html>
