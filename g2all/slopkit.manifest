@@ -1,13 +1,13 @@
-﻿CACHE MANIFEST 
+﻿CACHE MANIFEST
+# playshe-fast-slopkit-v1
 
 CACHE:
-../img.jpg
-../style.css
+fast-host.js
 goldhen_2.4b18.12.bin
-index.html
 slopkit/chain_lapse.js
 slopkit/chain_poops.js
 slopkit/core.js
+slopkit/core.js?v=10
 slopkit/int64.js
 slopkit/jb.js
 slopkit/mem.js

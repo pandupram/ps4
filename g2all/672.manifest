@@ -1,0 +1,12 @@
+CACHE MANIFEST
+# playshe-fast-672-v1
+
+CACHE:
+fast-host.js
+../672goldhen/webkit.js
+../672goldhen/jb.js
+../672goldhen/exp_loader.js
+../672goldhen/goldhen_2.4b18.12.bin
+
+NETWORK:
+*

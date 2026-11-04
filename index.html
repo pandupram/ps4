@@ -1,6 +1,37 @@
 <!DOCTYPE html>
-<html lang="id" manifest="cache.manifest">
+<html lang="id">
 <head>
+<script>
+(function () {
+  if (location.search.indexOf("menu=1") !== -1) return;
+
+  var match = navigator.userAgent.match(/PlayStation 4[ /]([\d.]+)/i);
+  if (!match) return;
+
+  var fw = parseFloat(match[1]);
+  var target = "";
+
+  if (fw === 5.05 || fw === 5.07) {
+    target = "g2all/cache505.html";
+  } else if (fw === 6.72) {
+    target = "g2all/cache672.html";
+  } else if (fw >= 7.00 && fw <= 8.52) {
+    target = "g2all/cache700.html";
+  } else if (fw >= 9.00 && fw <= 9.60) {
+    target = "g2all/cache900.html";
+  } else if (fw >= 10.00 && fw <= 11.02) {
+    target = "g2all/cachecss.html";
+  } else if (
+    (fw >= 11.50 && fw <= 12.02) ||
+    (fw >= 12.50 && fw <= 13.00) ||
+    (fw >= 13.02 && fw <= 13.52)
+  ) {
+    target = "g2all/cacheslopkit.html";
+  }
+
+  if (target) location.replace(target);
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PLAYSHE — PlayStation Rental All-in-One Station</title>
@@ -401,7 +432,7 @@
   <!-- Firmware Auto Detection Panel -->
   <div class="detector-panel" id="detector-panel">
     <div class="detector-info">
-      <div class="detector-icon">🎮</div>
+          <div class="detector-icon">PS4</div>
       <div class="detector-text">
         <h3 id="detector-title">Mendeteksi Sistem Konsol...</h3>
         <p id="detector-desc">Membaca User-Agent browser PlayStation 4</p>
@@ -409,7 +440,7 @@
     </div>
     <div id="detector-action">
       <button class="auto-action-btn" id="auto-btn" onclick="executeAutoLaunch()">
-        <span>🚀 Jalankan Exploit Langsung</span>
+        <span>Jalankan Exploit Langsung</span>
       </button>
     </div>
   </div>

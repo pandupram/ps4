@@ -1,11 +1,10 @@
-﻿CACHE MANIFEST 
+﻿CACHE MANIFEST
+# playshe-fast-505-v1
 
-CACHE: 
-../img.jpg
-../style.css
+CACHE:
+fast-host.js
 goldhen_2.4b18.12.bin
-index.html
 505/exploit.js
 
-NETWORK: 
-* 
+NETWORK:
+*

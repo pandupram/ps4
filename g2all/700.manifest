@@ -1,15 +1,13 @@
-﻿CACHE MANIFEST 
+﻿CACHE MANIFEST
+# playshe-fast-700-v1
 
-CACHE: 
-../img.jpg
-../style.css
+CACHE:
+fast-host.js
 goldhen_2.4b18.12.bin
-index.html
 700/alert.js
 700/config.js
 700/lapse.js
 700/psfree.js
-700/send.js
 700/kpatch/700.elf
 700/kpatch/750.elf
 700/kpatch/800.elf
@@ -33,5 +31,5 @@ index.html
 700/rop/800.js
 700/rop/850.js
 
-NETWORK: 
-* 
+NETWORK:
+*

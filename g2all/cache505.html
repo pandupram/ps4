@@ -1,23 +1,25 @@
-﻿<!DOCTYPE html>
-<html manifest="505.manifest">
+<!DOCTYPE html>
+<html lang="id" data-family="505" manifest="505.manifest">
 <head>
-<title>PS4 [5.05] 7.00 - 13.52 FW GoldHEN Host by PlayShe</title>
-<link rel="stylesheet" href="../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PS4 5.05 Fast Offline Host</title>
+<style>
+:root{color-scheme:dark light;--bg:#10141d;--panel:#172033;--text:#f7f9fc;--muted:#a8b3c7;--accent:#39d9ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center}
+main{width:100%;max-width:680px;padding:32px;background:var(--panel);border:1px solid rgba(57,217,255,.35);border-radius:12px}
+h1{margin:0 0 24px;font-size:30px;line-height:1.25}#msgs{margin:0;color:var(--text);font-size:18px;line-height:1.5}
+#counters{margin:20px 0 0;color:var(--muted);font-variant-numeric:tabular-nums}
+@media(prefers-color-scheme:light){:root{--bg:#eef3f8;--panel:#fff;--text:#152033;--muted:#52627a;--accent:#006b8a}}
+</style>
 </head>
 <body>
-<script>
-history.replaceState(null,null,'index.html');var histlength=history.length;history.go(-histlength);
-function DLProgress(e){Percent=(Math.round(e.loaded / e.total * 100));window.msgs.innerHTML="Installing Offline Cache: " + Percent + "%";}
-function DisplayCacheProgress(){window.msgs.innerHTML="Cache Installed Successfully ✔";setTimeout(function(){window.msgs.innerHTML="Now Close And Re-Open Your Browser ...";},1500);}
-window.applicationCache.addEventListener("progress",DLProgress,false);
-window.applicationCache.oncached=function(e){DisplayCacheProgress();};
-window.applicationCache.onupdateready=function(e){DisplayCacheProgress();};
-window.applicationCache.onerror=function(e){window.msgs.innerHTML="Error Installing Cache! - Clear and Re-Open Your Browser ...";};
-</script>
-<h1>PS4 [5.05] 7.00 - 13.52 FW GoldHEN Host by PlayShe</h1>
-<hr>
-<br>
-<h1 id=msgs style="font-size: 30px;margin-top: 77px;margin-bottom: 455px;">Starting Cache Installation...</h1>
-<h1 style="margin-top: 40px; font-size: 20px; color: #a0aec0; letter-spacing: 2px;">Matur Suwun</h1>
+<main>
+<h1>PS4 5.05 Fast Offline Host</h1>
+<p id="msgs" role="status" aria-live="polite">Menyiapkan cache firmware...</p>
+<p id="counters" hidden>Pass: <span id="passCounter">0</span> | Fail: <span id="failCounter">0</span></p>
+</main>
+<script src="fast-host.js"></script>
 </body>
 </html>
