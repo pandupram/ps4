@@ -1,8 +1,15 @@
-﻿CACHE MANIFEST
-# playshe-fast-css-v1
+CACHE MANIFEST
+# playshe-unified-css-v2
 
 CACHE:
-fast-host.js
+../index.html
+../ui/host.css
+../ui/firmware-config.js
+../ui/dashboard.js
+../ui/landing-app.js
+../ui/cache-service.js
+../ui/launcher-service.js
+../ui/host-app.js
 goldhen_2.4b18.12.bin
 css/lapse.js
 css/loader.js

@@ -1,51 +1,14 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="id">
 <head>
-<title>PS4 [5.05] 7.00 - 13.52 FW GoldHEN Host by PlayShe</title>
-<link rel="stylesheet" href="../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlayShe Firmware Dispatcher</title>
+<script>
+location.replace("../index.html");
+</script>
 </head>
 <body>
-<script>
-var uaFull = navigator.userAgent;
-var match = uaFull.match(/PlayStation 4[ /]([\d.]+)/i);
-var isPS4 = match !== null;
-var fwVersion = isPS4 ? match[1] : "Unknown";
-var fwNum = parseFloat(fwVersion);
-
-if (!isPS4) {
-    document.addEventListener("DOMContentLoaded", function () {
-        msgs.innerHTML = "Only for PS4 with Firmware 5.05 and 7.00 to 13.52";
-    });
-} else {
-    var target = "";
-    if (fwNum == 5.05 || fwNum == 5.07) {
-        target = "cache505.html";
-    } else if (fwNum == 6.72) {
-        target = "cache672.html";
-    } else if (fwNum >= 7.00 && fwNum <= 8.52) {
-        target = "cache700.html";
-    } else if (fwNum >= 9.00 && fwNum <= 9.60) {
-        target = "cache900.html";
-    } else if (fwNum >= 10.00 && fwNum <= 11.02) {
-        target = "cachecss.html";
-    } else if (
-        (fwNum >= 11.50 && fwNum <= 12.02) ||
-        (fwNum >= 12.50 && fwNum <= 13.00) ||
-        (fwNum >= 13.02 && fwNum <= 13.52)
-    ) {
-        target = "cacheslopkit.html";
-    } else {
-        document.addEventListener("DOMContentLoaded", function () {
-            msgs.innerHTML = 'Unsupported Firmware: <span style="color: red;">' + fwVersion + '</span>';
-        });
-    }
-    if (target) window.location.replace(target);
-}
-</script>
-<h1>PS4 [5.05] 7.00 - 13.52 FW GoldHEN Host by PlayShe</h1>
-<hr>
-<br>
-<h1 id=msgs style="font-size: 30px;margin-top: 77px;margin-bottom: 455px;">Loading GoldHEN v2.4b18.12... Please Wait</h1>
-<h1 style="margin-top: 40px; font-size: 20px; color: #a0aec0; letter-spacing: 2px;">Matur Suwun</h1>
+<p><a href="../index.html">Buka PlayShe Unified PS4 Host</a></p>
 </body>
 </html>

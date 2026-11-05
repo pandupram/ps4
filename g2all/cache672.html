@@ -4,22 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PS4 6.72 Fast Offline Host</title>
-<style>
-:root{color-scheme:dark light;--bg:#10141d;--panel:#172033;--text:#f7f9fc;--muted:#a8b3c7;--accent:#39d9ff}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center}
-main{width:100%;max-width:680px;padding:32px;background:var(--panel);border:1px solid rgba(57,217,255,.35);border-radius:12px}
-h1{margin:0 0 24px;font-size:30px;line-height:1.25}#msgs{margin:0;color:var(--text);font-size:18px;line-height:1.5}
-#counters{margin:20px 0 0;color:var(--muted);font-variant-numeric:tabular-nums}
-@media(prefers-color-scheme:light){:root{--bg:#eef3f8;--panel:#fff;--text:#152033;--muted:#52627a;--accent:#006b8a}}
-</style>
+<link rel="stylesheet" href="../ui/host.css">
 </head>
 <body>
-<main>
-<h1>PS4 6.72 Fast Offline Host</h1>
-<p id="msgs" role="status" aria-live="polite">Menyiapkan cache firmware...</p>
-<p id="counters" hidden>Pass: <span id="passCounter">0</span> | Fail: <span id="failCounter">0</span></p>
-</main>
-<script src="fast-host.js"></script>
+<div id="app"></div>
+<script src="../ui/firmware-config.js"></script>
+<script src="../ui/cache-service.js"></script>
+<script src="../ui/launcher-service.js"></script>
+<script src="../ui/dashboard.js"></script>
+<script src="../ui/host-app.js"></script>
 </body>
 </html>

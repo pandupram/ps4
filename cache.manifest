@@ -1,8 +1,12 @@
 CACHE MANIFEST
-# v3.0.0-fast-dispatch-migration
+# v4.0.0-unified-host-migration
 
 CACHE:
 index.html
+ui/host.css
+ui/firmware-config.js
+ui/dashboard.js
+ui/landing-app.js
 
 NETWORK:
 *

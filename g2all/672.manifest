@@ -1,8 +1,15 @@
 CACHE MANIFEST
-# playshe-fast-672-v1
+# playshe-unified-672-v2
 
 CACHE:
-fast-host.js
+../index.html
+../ui/host.css
+../ui/firmware-config.js
+../ui/dashboard.js
+../ui/landing-app.js
+../ui/cache-service.js
+../ui/launcher-service.js
+../ui/host-app.js
 ../672goldhen/webkit.js
 ../672goldhen/jb.js
 ../672goldhen/exp_loader.js

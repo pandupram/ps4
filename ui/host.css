@@ -1,0 +1,635 @@
+:root {
+    color-scheme: dark;
+    --bg: #030509;
+    --panel: #080d15;
+    --panel-2: #0d1420;
+    --text: #f4f7ff;
+    --muted: #8494ad;
+    --cyan: #19e6f4;
+    --magenta: #ff168f;
+    --green: #35ff98;
+    --yellow: #ffdc45;
+    --danger: #ff5964;
+    --line: #2b3b55;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+    background: #030509;
+    color: #f4f7ff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 82% 10%, rgba(255, 22, 143, 0.11), transparent 27%),
+        radial-gradient(circle at 18% 88%, rgba(25, 230, 244, 0.10), transparent 30%),
+        #030509;
+}
+
+body:before {
+    content: "";
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.022), rgba(255,255,255,0.022) 1px, transparent 1px, transparent 4px),
+        linear-gradient(rgba(25,230,244,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(25,230,244,0.025) 1px, transparent 1px);
+    background-size: auto, 42px 42px, 42px 42px;
+}
+
+::selection {
+    background: rgba(25, 230, 244, 0.25);
+    color: #ffffff;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+.cyber-button {
+    min-height: 52px;
+    border: 0;
+    font: inherit;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-align: center;
+}
+
+button:focus-visible,
+.cyber-button:focus-visible,
+a:focus-visible {
+    outline: 2px solid #ffdc45;
+    outline-offset: 3px;
+}
+
+button:disabled {
+    cursor: default;
+    opacity: 0.56;
+}
+
+.cyber-shell {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    padding: 18px 28px 16px;
+}
+
+.cyber-shell:before,
+.cyber-shell:after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    width: 112px;
+    height: 22px;
+    border-top: 3px solid #19e6f4;
+}
+
+.cyber-shell:before {
+    left: 18px;
+    border-left: 3px solid #19e6f4;
+}
+
+.cyber-shell:after {
+    right: 18px;
+    border-right: 3px solid #ff168f;
+    border-top-color: #19e6f4;
+}
+
+.cyber-inner {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.cyber-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 142px;
+    border-bottom: 1px solid #25344b;
+}
+
+.playshe-logo {
+    width: 560px;
+    max-width: 56%;
+    height: 126px;
+    object-fit: cover;
+    object-position: center 51%;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.12));
+}
+
+.system-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.system-tag {
+    padding: 9px 14px;
+    background: #070b12;
+    border: 1px solid #32445f;
+    color: #9fb0c9;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    -webkit-clip-path: polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+    clip-path: polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+}
+
+.system-tag.target {
+    border-color: #19e6f4;
+    color: #19e6f4;
+}
+
+.system-tag.online {
+    border-color: #35ff98;
+    color: #35ff98;
+}
+
+.console-layout {
+    display: flex;
+    gap: 22px;
+    padding-top: 22px;
+}
+
+.firmware-zone {
+    width: 61%;
+}
+
+.process-zone {
+    width: 39%;
+}
+
+.zone-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 28px;
+    margin-bottom: 12px;
+}
+
+.zone-heading h1,
+.zone-heading h2 {
+    margin: 0;
+    color: #19e6f4;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0.22em;
+}
+
+.zone-heading span {
+    color: #7889a4;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+}
+
+.firmware-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+}
+
+.firmware-card {
+    position: relative;
+    display: block;
+    width: calc(33.333% - 9px);
+    min-height: 190px;
+    padding: 20px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #111827, #080d15);
+    border: 1px solid #2b3b55;
+    -webkit-clip-path: polygon(15px 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,0 100%,0 15px);
+    clip-path: polygon(15px 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,0 100%,0 15px);
+}
+
+.firmware-card:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 58px;
+    height: 3px;
+    background: #19e6f4;
+}
+
+.firmware-card:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    width: 28px;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, #53637a 0 3px, transparent 3px 6px);
+}
+
+.firmware-card:hover,
+.firmware-card:focus-visible {
+    border-color: #19e6f4;
+    background: linear-gradient(145deg, #142238, #09111c);
+}
+
+.firmware-card.active {
+    border-color: #35ff98;
+    background: linear-gradient(145deg, rgba(0, 69, 47, 0.78), #08110e);
+}
+
+.firmware-card.active:before {
+    width: 100%;
+    background: #35ff98;
+}
+
+.firmware-number {
+    display: block;
+    color: #f4f7ff;
+    font-size: 30px;
+    font-weight: 1000;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+}
+
+.firmware-engine {
+    display: block;
+    margin-top: 8px;
+    color: #90a2bd;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+}
+
+.firmware-size {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 3px 7px;
+    background: #131d2b;
+    color: #ffdc45;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+}
+
+.firmware-state {
+    position: absolute;
+    bottom: 18px;
+    left: 20px;
+    color: #91a1b9;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
+.firmware-card.active .firmware-state {
+    color: #35ff98;
+}
+
+.process-console {
+    min-height: 514px;
+    padding: 20px;
+    background: #080d15;
+    border: 1px solid #31415a;
+    -webkit-clip-path: polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);
+    clip-path: polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px);
+}
+
+.console-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.console-head strong {
+    font-size: 15px;
+    letter-spacing: 0.17em;
+}
+
+.console-head span {
+    color: #35ff98;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+}
+
+.target-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 78px;
+    margin-bottom: 18px;
+    padding: 14px 18px;
+    overflow: hidden;
+    background: linear-gradient(90deg, rgba(25,230,244,0.08), transparent);
+    border: 1px solid #243249;
+}
+
+.target-box:after {
+    content: "PS4";
+    position: absolute;
+    right: 14px;
+    color: rgba(255,255,255,0.035);
+    font-size: 54px;
+    font-weight: 1000;
+}
+
+.target-box small,
+.target-box strong {
+    display: block;
+}
+
+.target-box small {
+    color: #8293ad;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+}
+
+.target-box strong {
+    font-size: 27px;
+    line-height: 1.1;
+}
+
+.progress-heading {
+    display: flex;
+    justify-content: space-between;
+    color: #f4f7ff;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+}
+
+.progress-heading span:last-child {
+    color: #ffdc45;
+    font-variant-numeric: tabular-nums;
+}
+
+.segment-bar {
+    display: flex;
+    gap: 4px;
+    height: 25px;
+    margin: 10px 0 14px;
+    padding: 4px;
+    background: #030509;
+    border: 1px solid #374965;
+}
+
+.segment {
+    flex: 1 1 0;
+    height: 100%;
+    background: #142033;
+}
+
+.segment.complete {
+    background: #19e6f4;
+}
+
+.segment.active {
+    background: #ffdc45;
+}
+
+.stage-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.stage {
+    flex: 1 1 0;
+    padding: 8px 3px;
+    border-bottom: 2px solid #27364e;
+    color: #8293ad;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+.stage[data-state="complete"] {
+    border-color: #19e6f4;
+    color: #19e6f4;
+}
+
+.stage[data-state="active"] {
+    border-color: #ffdc45;
+    color: #ffdc45;
+}
+
+.stage[data-state="failed"] {
+    border-color: #ff5964;
+    color: #ff5964;
+}
+
+.process-status {
+    min-height: 44px;
+    margin: 0 0 14px;
+    color: #9aabc3;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.counter-strip {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.counter-box {
+    flex: 1 1 0;
+    padding: 8px;
+    background: #0d1420;
+    border: 1px solid #27364e;
+    color: #8494ad;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-align: center;
+}
+
+.counter-box strong {
+    display: block;
+    color: #f4f7ff;
+    font-size: 20px;
+}
+
+.primary-launch {
+    width: 100%;
+    min-height: 61px;
+    padding: 14px;
+    background: #19e6f4;
+    color: #02080c;
+    -webkit-clip-path: polygon(13px 0,100% 0,100% calc(100% - 13px),calc(100% - 13px) 100%,0 100%,0 13px);
+    clip-path: polygon(13px 0,100% 0,100% calc(100% - 13px),calc(100% - 13px) 100%,0 100%,0 13px);
+    box-shadow: 8px 8px 0 #ff168f;
+}
+
+.primary-launch:hover,
+.primary-launch:active {
+    background: #78f5ff;
+}
+
+.secondary-actions {
+    display: flex;
+    gap: 11px;
+    margin-top: 18px;
+}
+
+.secondary-action {
+    flex: 1 1 0;
+    padding: 13px 8px;
+    background: #0c121d;
+    border: 1px solid #384b69;
+    color: #d9e1ee;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.10em;
+    text-align: center;
+    -webkit-clip-path: polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+    clip-path: polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
+}
+
+.secondary-action:hover,
+.secondary-action:focus-visible {
+    border-color: #19e6f4;
+    color: #19e6f4;
+}
+
+.cyber-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 10px;
+    color: #8799b4;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (max-width: 860px) {
+    .cyber-shell {
+        padding: 16px;
+    }
+
+    .cyber-top {
+        min-height: 118px;
+    }
+
+    .playshe-logo {
+        width: 430px;
+        max-width: 64%;
+        height: 104px;
+    }
+
+    .system-tag:first-child {
+        display: none;
+    }
+
+    .console-layout {
+        flex-direction: column;
+    }
+
+    .firmware-zone,
+    .process-zone {
+        width: 100%;
+    }
+
+    .firmware-card {
+        width: calc(50% - 7px);
+        min-height: 170px;
+    }
+}
+
+@media (max-width: 520px) {
+    .cyber-shell {
+        padding: 12px;
+    }
+
+    .cyber-shell:before,
+    .cyber-shell:after {
+        width: 54px;
+    }
+
+    .cyber-top {
+        min-height: 96px;
+    }
+
+    .playshe-logo {
+        width: 255px;
+        max-width: 68%;
+        height: 82px;
+    }
+
+    .system-tags {
+        gap: 5px;
+    }
+
+    .system-tag {
+        padding: 7px 9px;
+        font-size: 11px;
+    }
+
+    .zone-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .firmware-card {
+        min-height: 150px;
+        padding: 16px;
+    }
+
+    .firmware-number {
+        font-size: 22px;
+    }
+
+    .firmware-engine {
+        font-size: 10px;
+    }
+
+    .firmware-state {
+        bottom: 14px;
+        left: 16px;
+        font-size: 10px;
+    }
+
+    .process-console {
+        min-height: 0;
+        padding: 16px;
+    }
+
+    .target-box strong {
+        font-size: 24px;
+    }
+
+    .stage {
+        font-size: 10px;
+        letter-spacing: 0;
+    }
+
+    .secondary-actions {
+        flex-direction: column;
+    }
+
+    .cyber-footer {
+        flex-direction: column;
+    }
+}

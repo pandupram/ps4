@@ -1,8 +1,15 @@
-﻿CACHE MANIFEST
-# playshe-fast-slopkit-v1
+CACHE MANIFEST
+# playshe-unified-slopkit-v2
 
 CACHE:
-fast-host.js
+../index.html
+../ui/host.css
+../ui/firmware-config.js
+../ui/dashboard.js
+../ui/landing-app.js
+../ui/cache-service.js
+../ui/launcher-service.js
+../ui/host-app.js
 goldhen_2.4b18.12.bin
 slopkit/chain_lapse.js
 slopkit/chain_poops.js
