@@ -576,6 +576,7 @@ function jailbreak() {
 
 // intended for use only after kernel arw
 function kernel_patches(shellcode) {
+  window.PlaySheAssets.validate("css/ps4/patches/" + constants.KPATCH, shellcode);
   logger.info("Applying kernel patches...");
 
   const sysent_661_addr = kernel_base.add(constants.SYSENT_661);
@@ -591,10 +592,6 @@ function kernel_patches(shellcode) {
   logger.debug(`sy_narg: ${sy_narg}`);
   logger.debug(`sy_call: ${sy_call}`);
   logger.debug(`sy_thrcnt: ${sy_thrcnt}`);
-
-  kview(sysent_661_addr).setUint32(0, 2, true);
-  kview(sysent_661_addr).setBInt(8, jmp_rsi_gadget_addr, true);
-  kview(sysent_661_addr).setUint32(0x2c, 1, true);
 
   const size = shellcode.length.alignUp(PAGE_SIZE);
   const prot = PROT_READ | PROT_WRITE | PROT_EXEC;
@@ -614,15 +611,25 @@ function kernel_patches(shellcode) {
 
   mem.copy(mapping_addr, shellcode.buffer.data(), shellcode.length);
 
-  const ret = fn.kexec.invoke(mapping_addr);
-  logger.debug(`kexec_ret: ${ret}`);
-  if (ret === -1) {
-    throw new SyscallError(`Unable to kexec ${mapping_addr} !!`);
+  // Prepare and validate everything before touching the syscall entry.
+  try {
+    kview(sysent_661_addr).setUint32(0, 2, true);
+    kview(sysent_661_addr).setBInt(8, jmp_rsi_gadget_addr, true);
+    kview(sysent_661_addr).setUint32(0x2c, 1, true);
+    const ret = fn.kexec.invoke(mapping_addr);
+    logger.debug(`kexec_ret: ${ret}`);
+    if (ret === -1) throw new SyscallError(`Unable to kexec ${mapping_addr} !!`);
+  } finally {
+    // Best effort for each field: one failed write must not skip the others.
+    let restoreError = null;
+    try { kview(sysent_661_addr).setBInt(8, sy_call, true); } catch (e) { restoreError = e; }
+    try { kview(sysent_661_addr).setUint32(0, sy_narg, true); } catch (e) { restoreError = e; }
+    try { kview(sysent_661_addr).setUint32(0x2c, sy_thrcnt, true); } catch (e) { restoreError = e; }
+    if (restoreError) {
+      if (window.PlaySheHostReport) window.PlaySheHostReport("reboot-required", "sysent restore failed");
+      throw new Error("REBOOT REQUIRED: sysent restore failed; " + restoreError.message);
+    }
   }
-
-  kview(sysent_661_addr).setUint32(0, sy_narg, true);
-  kview(sysent_661_addr).setBInt(8, sy_call, true);
-  kview(sysent_661_addr).setUint32(0x2c, sy_thrcnt, true);
 
   logger.info("Kernel patches applied !!");
 }

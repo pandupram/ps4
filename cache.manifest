@@ -3,6 +3,7 @@ CACHE MANIFEST
 
 CACHE:
 index.html
+PROPIL.png
 ui/host.css
 ui/firmware-config.js
 ui/dashboard.js

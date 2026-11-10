@@ -11,7 +11,7 @@
 
     function cacheState(key) {
         try {
-            return localStorage.getItem("playshe_cache_" + key) === "ready" ? "CACHE READY" : "NOT INSTALLED";
+            return localStorage.getItem("playshe_cache_" + key) === "ready-v2" ? "CACHE RECORDED" : "CACHE NOT VERIFIED";
         } catch (error) {
             return "CACHE UNKNOWN";
         }
@@ -66,9 +66,9 @@
                             '<section class="process-console">',
                                 '<div class="console-head"><strong id="processHeading">', options.mode === "host" ? "INSTALL / LAUNCH" : "INSTALL CACHE", '</strong><span id="processState">', selected ? "READY" : "SELECT TARGET", '</span></div>',
                                 '<div class="target-box"><div><small>TARGET</small><strong id="targetName">', selected ? escapeHtml(selected.shortTitle) : "SELECT FW", '</strong></div></div>',
-                                '<div class="progress-heading"><span>CACHE PROCESS</span><span id="progressValue">0%</span></div>',
+                                '<div class="progress-heading"><span>CACHE DOWNLOAD</span><span id="progressValue">0%</span></div>',
                                 '<div class="segment-bar" id="segmentBar" role="progressbar" aria-label="Cache process" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">',
-                                    '<i class="segment"></i><i class="segment"></i><i class="segment"></i><i class="segment"></i><i class="segment"></i><i class="segment"></i><i class="segment"></i><i class="segment"></i>',
+                                    '<i class="cache-fill" id="cacheFill"></i>',
                                 '</div>',
                                 '<div class="stage-row">',
                                     '<span class="stage" id="stage-cache" data-state="pending">CACHE</span>',
@@ -76,8 +76,13 @@
                                     '<span class="stage" id="stage-kernel" data-state="pending">KERNEL</span>',
                                     '<span class="stage" id="stage-payload" data-state="pending">GOLDHEN</span>',
                                 '</div>',
+                                '<div class="execution-info"><span id="executionState">RUNTIME NOT STARTED</span><span id="elapsedTime">0s</span></div>',
+                                '<p class="progress-note">Persentase hanya untuk cache. Tahap internal mengikuti laporan engine; tampilan dapat tertahan saat thread sibuk.</p>',
                                 '<p class="process-status" id="msgs" role="status" aria-live="polite">', selected ? "TARGET " + escapeHtml(selected.shortTitle) : "PILIH FIRMWARE", '</p>',
                                 counterMarkup,
+                                '<details class="debug-panel" id="debugPanel"><summary>DEBUG / TIMELINE</summary>',
+                                    options.mode === "host" ? '<label class="remote-debug"><input type="checkbox" id="remoteDebugToggle"> Kirim debug jaringan (opsional, Slopkit)</label>' : '',
+                                    '<pre id="debugLog" aria-label="Process debug log"></pre></details>',
                                 '<button class="primary-launch" id="primaryAction" type="button">', options.mode === "host" ? "MENYIAPKAN CACHE" : "BUKA TARGET", '</button>',
                             '</section>',
                             '<div class="secondary-actions">',
@@ -91,18 +96,32 @@
             '</div>'
         ].join("");
 
-        function setProgress(percent) {
-            var value = Math.max(0, Math.min(100, percent || 0));
-            var segments = document.getElementById("segmentBar").getElementsByTagName("i");
-            var completed = Math.floor(value / 12.5);
-            var j;
-            for (j = 0; j < segments.length; j++) {
-                segments[j].className = "segment";
-                if (j < completed) segments[j].className += " complete";
-                else if (j === completed && value < 100 && value > 0) segments[j].className += " active";
-            }
-            document.getElementById("progressValue").textContent = value + "%";
-            document.getElementById("segmentBar").setAttribute("aria-valuenow", value);
+        var logLines = [];
+
+        function setProgress(percent, label) {
+            var unknown = percent === null;
+            var value = Math.max(0, Math.min(100, Number(percent) || 0));
+            var bar = document.getElementById("segmentBar");
+            bar.className = "segment-bar" + (unknown ? " indeterminate" : "");
+            document.getElementById("cacheFill").style.width = unknown ? "30%" : value + "%";
+            document.getElementById("progressValue").textContent = label || (unknown ? "MENGUNDUH..." : value + "%");
+            if (unknown) bar.removeAttribute("aria-valuenow");
+            else bar.setAttribute("aria-valuenow", value);
+            bar.setAttribute("aria-valuetext", label || (unknown ? "Total unduhan belum tersedia" : value + "%"));
+        }
+
+        function setExecution(message) {
+            document.getElementById("executionState").textContent = message;
+        }
+
+        function setElapsed(seconds) {
+            document.getElementById("elapsedTime").textContent = seconds + "s";
+        }
+
+        function addLog(message, seconds) {
+            logLines.push("[" + seconds + "s] " + String(message).slice(0, 240));
+            if (logLines.length > 40) logLines.shift();
+            document.getElementById("debugLog").textContent = logLines.join("\n");
         }
 
         function setStage(stage, state) {
@@ -112,6 +131,21 @@
         function setStatus(message, state) {
             document.getElementById("msgs").textContent = message;
             document.getElementById("processState").textContent = String(state || "RUNNING").toUpperCase();
+        }
+
+        // One-way lock: never re-enter a runtime from a modified kernel session.
+        function lockNavigation() {
+            var links = app.getElementsByTagName("a");
+            var j;
+            for (j = 0; j < links.length; j++) {
+                links[j].removeAttribute("href");
+                links[j].setAttribute("aria-disabled", "true");
+                links[j].setAttribute("tabindex", "-1");
+                links[j].onclick = function (event) {
+                    if (event && event.preventDefault) event.preventDefault();
+                    return false;
+                };
+            }
         }
 
         function setSelected(config) {
@@ -136,9 +170,13 @@
         return {
             selected: selected,
             setProgress: setProgress,
+            setExecution: setExecution,
+            setElapsed: setElapsed,
+            addLog: addLog,
             setStage: setStage,
             setStatus: setStatus,
             setSelected: setSelected,
+            lockNavigation: lockNavigation,
             primary: document.getElementById("primaryAction"),
             footer: document.getElementById("footerState")
         };

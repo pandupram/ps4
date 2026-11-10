@@ -1800,33 +1800,46 @@ function array_from_address(addr, size) {
 }
 
 function runPayload(PLfile) {
-  var loader_addr = chain.sysp('mmap', 0, 0x1000, 7, 0x41000, -1, 0);
-  var tmpStubArray = array_from_address(loader_addr, 1);
-  tmpStubArray[0] = 0x00C3E7FF;
+  return new Promise((resolve, reject) => {
+    var loader_addr = chain.sysp('mmap', 0, 0x1000, 7, 0x41000, -1, 0);
+    var tmpStubArray = array_from_address(loader_addr, 1);
+    tmpStubArray[0] = 0x00C3E7FF;
 
-  var req = new XMLHttpRequest();
-  req.responseType = "arraybuffer";
-  req.open('GET', PLfile);
-  req.send();
+    var req = new XMLHttpRequest();
+    req.responseType = "arraybuffer";
+    req.open('GET', PLfile);
 
-  req.onreadystatechange = function () {
-    if (req.readyState == 4) {
-      if ((req.status === 200 || req.status === 0) && req.response) {
-        var PLD = req.response;
-        var payload_buffer = chain.sysp('mmap', 0, PLD.byteLength * 4, 7, 0x1002, -1, 0);
-        var pl = array_from_address(payload_buffer, PLD.byteLength * 4);
-        var padding = new Uint8Array(4 - (req.response.byteLength % 4) % 4);
-        var tmp = new Uint8Array(req.response.byteLength + padding.byteLength);
-        tmp.set(new Uint8Array(req.response), 0);
-        tmp.set(padding, req.response.byteLength);
-        var shellcode = new Uint32Array(tmp.buffer);
-        pl.set(shellcode, 0);
-        var pthread = malloc(0x10);
+    req.onreadystatechange = function () {
+      if (req.readyState == 4) {
+        if ((req.status === 200 || req.status === 0) && req.response && req.response.byteLength > 0) {
+          try {
+            var PLD = req.response;
+            var payload_buffer = chain.sysp('mmap', 0, PLD.byteLength * 4, 7, 0x1002, -1, 0);
+            var pl = array_from_address(payload_buffer, PLD.byteLength * 4);
+            var padding = new Uint8Array(4 - (req.response.byteLength % 4) % 4);
+            var tmp = new Uint8Array(req.response.byteLength + padding.byteLength);
+            tmp.set(new Uint8Array(req.response), 0);
+            tmp.set(padding, req.response.byteLength);
+            var shellcode = new Uint32Array(tmp.buffer);
+            pl.set(shellcode, 0);
+            var pthread = malloc(0x10);
 
-        call_nze('pthread_create', pthread, 0, loader_addr, payload_buffer);
+            call_nze('pthread_create', pthread, 0, loader_addr, payload_buffer);
+            // Thread submission is a runtime report, not an installation probe.
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        } else {
+          reject(new Error(`Unable to retrieve payload: HTTP ${req.status} or empty response`));
+        }
       }
-    }
-  };
+    };
+    req.onerror = function () { reject(new Error("Payload network error")); };
+    req.onabort = function () { reject(new Error("Payload request aborted")); };
+    req.ontimeout = function () { reject(new Error("Payload request timed out")); };
+    req.send();
+  });
 }
 
 function hostFail() {
@@ -1837,8 +1850,12 @@ function hostFail() {
 kexploit().then(() => {
     setTimeout(() => {
         try {
-            runPayload("./goldhen_2.4b18.12.bin");
-            msgs.innerHTML = "GoldHEN v2.4b18.12 Loaded ...";
+            runPayload("./goldhen_2.4b18.12.bin").then(() => {
+                msgs.innerHTML = "GoldHEN v2.4b18.12 Loaded ...";
+            }).catch((error) => {
+                log(`Payload failed: ${error.message}`);
+                hostFail();
+            });
         } catch (e) {
             hostFail();
         }

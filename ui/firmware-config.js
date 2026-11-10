@@ -13,7 +13,7 @@
             cachePage: "g2all/cache505.html",
             engine: "WebKit + Kernel Exploit 5.05",
             payload: "GoldHEN 2.4b18.12",
-            cacheSize: "1.16 MiB",
+            cacheSize: "1.24 MiB",
             instruction: "Tidak memerlukan USB. Jangan membuka tab lain selama exploit berjalan."
         },
         {
@@ -27,7 +27,7 @@
             cachePage: "g2all/cache672.html",
             engine: "WebKit 6.72 + Jailbreak",
             payload: "GoldHEN 2.4b18.12",
-            cacheSize: "1.58 MiB",
+            cacheSize: "1.66 MiB",
             instruction: "Penghitung pass dan fail ditampilkan untuk membantu menilai kestabilan percobaan."
         },
         {
@@ -40,7 +40,7 @@
             cachePage: "g2all/cache700.html",
             engine: "PSFree + Lapse",
             payload: "GoldHEN 2.4b18.12",
-            cacheSize: "0.52 MiB",
+            cacheSize: "0.60 MiB",
             instruction: "Host memilih tabel kernel dan ROP berdasarkan firmware yang terdeteksi."
         },
         {
@@ -53,7 +53,7 @@
             cachePage: "g2all/cache900.html",
             engine: "PSFree + Lapse 9.x",
             payload: "GoldHEN 2.4b18.12",
-            cacheSize: "0.51 MiB",
+            cacheSize: "0.60 MiB",
             instruction: "Jalur PSFree tidak memakai alur USB klasik 9.00. Ikuti pesan engine jika tindakan diperlukan."
         },
         {
@@ -66,7 +66,7 @@
             cachePage: "g2all/cachecss.html",
             engine: "Classic Worker Kernel Runtime",
             payload: "GoldHEN 2.4b18.12",
-            cacheSize: "0.45 MiB",
+            cacheSize: "0.54 MiB",
             instruction: "Worker dan patch dipilih dari runtime CSS sesuai firmware."
         },
         {
@@ -79,7 +79,7 @@
             cachePage: "g2all/cacheslopkit.html",
             engine: "Slopkit Firmware Runners",
             payload: "GoldHEN 2.4b18.12",
-            cacheSize: "0.91 MiB",
+            cacheSize: "0.99 MiB",
             instruction: "Runner Lapse, Poops, atau JB dipilih tanpa mencampur batas keluarga firmware."
         }
     ];

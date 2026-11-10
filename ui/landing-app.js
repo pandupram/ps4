@@ -23,17 +23,17 @@
         }
 
         try {
-            cached = localStorage.getItem("playshe_cache_" + selected.key) === "ready";
+            cached = localStorage.getItem("playshe_cache_" + selected.key) === "ready-v2";
         } catch (error) {}
 
         dashboard.primary.textContent = cached ? "OPEN HOST " + selected.shortTitle : "INSTALL CACHE " + selected.shortTitle;
         dashboard.primary.onclick = function () {
             location.href = selected.cachePage;
         };
-        dashboard.setStatus(cached ? "CACHE READY / " + selected.shortTitle : "TARGET " + selected.shortTitle + " / CACHE REQUIRED", cached ? "READY" : "SELECTED");
-        dashboard.setProgress(cached ? 100 : 0);
-        dashboard.setStage("cache", cached ? "complete" : "pending");
-        dashboard.footer.textContent = cached ? "OFFLINE HOST READY" : "CACHE NOT INSTALLED";
+        dashboard.setStatus(cached ? "CACHE RECORDED / OPEN HOST TO VERIFY" : "TARGET " + selected.shortTitle + " / CACHE REQUIRED", "SELECTED");
+        dashboard.setProgress(0);
+        dashboard.setStage("cache", "pending");
+        dashboard.footer.textContent = cached ? "CACHE REQUIRES VERIFICATION" : "CACHE NOT VERIFIED";
     }
 
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, false);

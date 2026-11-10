@@ -375,8 +375,7 @@ button:disabled {
 }
 
 .segment-bar {
-    display: flex;
-    gap: 4px;
+    overflow: hidden;
     height: 25px;
     margin: 10px 0 14px;
     padding: 4px;
@@ -384,18 +383,65 @@ button:disabled {
     border: 1px solid #374965;
 }
 
-.segment {
-    flex: 1 1 0;
+.cache-fill {
+    display: block;
+    width: 0;
     height: 100%;
-    background: #142033;
-}
-
-.segment.complete {
     background: #19e6f4;
 }
 
-.segment.active {
+.indeterminate .cache-fill {
     background: #ffdc45;
+    animation: cache-pending 1.4s linear infinite alternate;
+}
+
+@keyframes cache-pending {
+    from { transform: translateX(0); }
+    to { transform: translateX(230%); }
+}
+
+.execution-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #ffdc45;
+    font-size: 11px;
+    margin: 0 0 8px;
+}
+
+.progress-note {
+    color: #8293ad;
+    font-size: 11px;
+    line-height: 1.5;
+    margin: 0 0 14px;
+}
+
+.debug-panel {
+    margin: 0 0 14px;
+    color: #9aabc3;
+    font-size: 11px;
+}
+
+.debug-panel summary { cursor: pointer; }
+
+.remote-debug {
+    display: block;
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+.debug-panel pre {
+    max-height: 180px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    padding: 8px;
+    background: #030509;
+    border: 1px solid #27364e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .indeterminate .cache-fill { animation: none; }
 }
 
 .stage-row {
@@ -417,6 +463,11 @@ button:disabled {
 
 .stage[data-state="complete"] {
     border-color: #19e6f4;
+    color: #19e6f4;
+}
+
+.stage[data-state="reported"] {
+    border-bottom: 2px dashed #19e6f4;
     color: #19e6f4;
 }
 

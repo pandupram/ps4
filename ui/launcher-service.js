@@ -18,6 +18,7 @@
             callbacks.onLog("Script dimuat: " + src);
             if (onload) onload();
         };
+        callbacks.onLog("Memuat script: " + src);
         document.head.appendChild(script);
     }
 

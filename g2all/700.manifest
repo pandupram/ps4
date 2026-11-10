@@ -1,13 +1,15 @@
 CACHE MANIFEST
-# playshe-unified-700-v2
+# playshe-unified-700-v6-audit-fixes
 
 CACHE:
 ../index.html
+../PROPIL.png
 ../ui/host.css
 ../ui/firmware-config.js
 ../ui/dashboard.js
 ../ui/landing-app.js
 ../ui/cache-service.js
+../ui/asset-service.js
 ../ui/launcher-service.js
 ../ui/host-app.js
 goldhen_2.4b18.12.bin

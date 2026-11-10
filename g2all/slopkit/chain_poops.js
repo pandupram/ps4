@@ -54,6 +54,7 @@ function hostFail() {
 }
 
 function post(tag, detail) {
+    if (window.PlaySheHostTelemetry === false || navigator.onLine === false) return;
     try {
         const x = new XMLHttpRequest();
         x.open("POST", "t", true);
